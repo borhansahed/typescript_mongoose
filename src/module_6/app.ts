@@ -1,33 +1,16 @@
 import { Application, Request, Response } from "express";
-import { Schema, model } from "mongoose";
-import { IUser } from "./modules/user/user.interface";
-import { userSchema } from "./modules/user/user.schema";
+import User from "./modules/user/user.model";
+import userRoute from "./modules/user/user.route";
 const express = require("express");
 const cors = require("cors");
 const app: Application = express();
 
 app.use(cors());
+app.use(express.json());
+app.use("/user", userRoute);
 
 app.get("/", async (req: Request, res: Response) => {
-  try {
-    const User = model<IUser>("User", userSchema);
-
-    const user = new User({
-      name: {
-        fastName: "Mohammad",
-        lastName: "sahed",
-      },
-      password: "sahed22",
-      role: "stude",
-      gender: "male",
-      email: "sahed@gmail.com",
-    });
-    await user.save();
-    res.send(user);
-  } catch (err: any) {
-    console.log(err._message);
-    res.send(err._message);
-  }
+  res.send({ hello: "world" });
 });
 
 export default app;
